@@ -43,7 +43,7 @@ if predict_button:
     st.header("浓度预测结果(mg/L)")
     try:
         # 将输入特征转换为模型所需格式
-        input_array = np.array([SEX, AGE, WT, Single_Dose,	Daily_Dose, SCR, CLCR,	BUN	,ALT, AST, CL, V]).reshape(1, -1)
+        input_array = np.array([SEX, AGE, WT, Single_Dose, Daily_Dose, SCR, CLCR, BUN, ALT, AST, CL, V]).reshape(1, -1)
 
 
         # 模型预测
