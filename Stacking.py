@@ -7,8 +7,7 @@ from sklearn.linear_model import Lasso
 from pytorch_tabnet.tab_model import TabNetRegressor
 
 # 加载模型
-model_path = "stacking_regressor_model.pkl"
-stacking_regressor = joblib.load(model_path)
+stacking_regressor = joblib.load('stacking_regressor_model.pkl')
 
 # 设置页面配置和标题
 st.set_page_config(layout="wide", page_title="Stacking 模型预测与 SHAP 可视化", page_icon="📊")
