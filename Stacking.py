@@ -8,7 +8,11 @@ from pytorch_tabnet.tab_model import TabNetClassifier, TabNetRegressor
 
 # 加载模型
 model_path = "stacking_regressor_model.pkl"
-stacking_regressor = joblib.load(model_path)
+try:
+    stacking_regressor = joblib.load(model_path)
+    st.success("模型加载成功！")
+except Exception as e:
+    st.error(f"模型加载失败：{e}")
 
 # 设置页面配置和标题
 st.set_page_config(layout="wide", page_title="Stacking 模型预测与 SHAP 可视化", page_icon="📊")
