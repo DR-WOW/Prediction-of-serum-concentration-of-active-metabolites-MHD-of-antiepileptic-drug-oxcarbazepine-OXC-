@@ -4,15 +4,11 @@ import pandas as pd
 from PIL import Image
 import joblib
 from sklearn.linear_model import Lasso
-from sklearn.base import RegressorMixin, BaseEstimator
-from pytorch_tabnet.tab_model import TabNetRegressor
-
-# 确保 TabNetRegressorWrapper 的定义路径正确
-from custom_wrappers import TabNetRegressorWrapper
+from pytorch_tabnet.tab_model import TabNetClassifier, TabNetRegressor
 
 # 加载模型
 model_path = "stacking_regressor_model.pkl"
-stacking_regressor = joblib.load(open(model_path, "rb"))
+stacking_regressor = joblib.load(model_path)
 
 # 设置页面配置和标题
 st.set_page_config(layout="wide", page_title="Stacking 模型预测与 SHAP 可视化", page_icon="📊")
@@ -28,7 +24,7 @@ st.sidebar.write("请输入特征值：")
 
 # 定义特征输入范围
 SEX = st.sidebar.selectbox("性别 Gender(1 = male, 0 = female)", [0, 1])
-AGE = st.sidebar.number_input("年龄Age (范围: 0.0-18)", min_value=0.0, max_value=18.0, value=5.0)
+AGE= st.sidebar.number_input("年龄Age (范围: 0.0-18)", min_value=0.0, max_value=18.0, value=5.0)
 WT = st.sidebar.number_input("体重Weight (范围: 0.0-100.0)", min_value=0.0, max_value=100.0, value=25.0)
 Single_Dose = st.sidebar.number_input("单次给药剂量/体重Single_Dose/weight (范围: 0.0-60)", min_value=0.0, max_value=60, value=15.0)
 Daily_Dose = st.sidebar.number_input("日总剂量Daily_Dose (范围: 0.0-2400)", min_value=0.0, max_value=2400, value=450)
@@ -48,7 +44,8 @@ if predict_button:
     st.header("浓度预测结果(mg/L)")
     try:
         # 将输入特征转换为模型所需格式
-        input_array = np.array([SEX, AGE, WT, Single_Dose, Daily_Dose, SCR, CLCR, BUN, ALT, AST, CL, V]).reshape(1, -1)
+        input_array = np.array([SEX, AGE, WT, Single_Dose,	Daily_Dose, SCR, CLCR,	BUN	,ALT, AST, CL, V]).reshape(1, -1)
+
 
         # 模型预测
         prediction = stacking_regressor.predict(input_array)[0]
