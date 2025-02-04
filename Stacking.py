@@ -4,6 +4,7 @@ import pandas as pd
 from PIL import Image
 import joblib
 from sklearn.linear_model import Lasso
+from sklearn.base import RegressorMixin, BaseEstimator
 from pytorch_tabnet.tab_model import TabNetRegressor
 
 # 加载模型
