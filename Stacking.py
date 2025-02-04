@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from PIL import Image
-import dill
+import joblib
 from sklearn.linear_model import Lasso
 from sklearn.base import RegressorMixin, BaseEstimator
 from pytorch_tabnet.tab_model import TabNetRegressor
@@ -12,7 +12,7 @@ from custom_wrappers import TabNetRegressorWrapper
 
 # 加载模型
 model_path = "stacking_regressor_model.pkl"
-stacking_regressor = dill.load(open(model_path, "rb"))
+stacking_regressor = joblib.load(open(model_path, "rb"))
 
 # 设置页面配置和标题
 st.set_page_config(layout="wide", page_title="Stacking 模型预测与 SHAP 可视化", page_icon="📊")
