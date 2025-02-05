@@ -3,8 +3,6 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 import joblib
-from sklearn.linear_model import Lasso
-from pytorch_tabnet.tab_model import TabNetClassifier, TabNetRegressor
 
 # 加载模型
 model_path = "stacking_regressor_model.pkl"
