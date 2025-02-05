@@ -56,17 +56,17 @@ st.sidebar.write("Please input feature values:")
 
 # Define feature input ranges with units
 SEX = st.sidebar.selectbox("Gender (1 = male, 0 = female)", [0, 1])
-AGE = st.sidebar.number_input("Age (years)", min_value=0.0, max_value=18.0, value=5.0)
-WT = st.sidebar.number_input("Weight (kg)", min_value=0.0, max_value=100.0, value=25.0)
-Single_Dose = st.sidebar.number_input("Single dose per weight (mg/kg)", min_value=0.0, max_value=60.0, value=15.0)
-Daily_Dose = st.sidebar.number_input("Daily dose (mg)", min_value=0.0, max_value=2400.0, value=450.0)
-SCR = st.sidebar.number_input("Serum creatinine (μmol/L)", min_value=0.0, max_value=150.0, value=30.0)
-CLCR = st.sidebar.number_input("Creatinine clearance rate (L/h)", min_value=0.0, max_value=200.0, value=90.0)
-BUN = st.sidebar.number_input("Blood urea nitrogen (mmol/L)", min_value=0.0, max_value=50.0, value=5.0)
-ALT = st.sidebar.number_input("Alanine aminotransferase (ALT) (U/L)", min_value=0.0, max_value=150.0, value=18.0)
-AST = st.sidebar.number_input("Aspartate transaminase (AST) (U/L)", min_value=0.0, max_value=150.0, value=18.0)
-CL = st.sidebar.number_input("Metabolic clearance of drugs (CL) (L/h)", min_value=0.0, max_value=100.0, value=3.85)
-V = st.sidebar.number_input("Apparent volume of distribution (Vd) (L)", min_value=0.0, max_value=1000.0, value=10.0)
+AGE = st.sidebar.number_input("Age (years)", min_value=0.1, max_value=18.0, value=5.0)
+WT = st.sidebar.number_input("Weight (kg)", min_value=0.1, max_value=100.0, value=25.0)
+Single_Dose = st.sidebar.number_input("Single dose per weight (mg/kg)", min_value=0.1, max_value=60.0, value=15.0)
+Daily_Dose = st.sidebar.number_input("Daily dose (mg)", min_value=0.1, max_value=2400.0, value=450.0)
+SCR = st.sidebar.number_input("Serum creatinine (μmol/L)", min_value=0.1, max_value=150.0, value=30.0)
+CLCR = st.sidebar.number_input("Creatinine clearance rate (L/h)", min_value=0.1, max_value=200.0, value=90.0)
+BUN = st.sidebar.number_input("Blood urea nitrogen (mmol/L)", min_value=0.1, max_value=50.0, value=5.0)
+ALT = st.sidebar.number_input("Alanine aminotransferase (ALT) (U/L)", min_value=0.1, max_value=150.0, value=18.0)
+AST = st.sidebar.number_input("Aspartate transaminase (AST) (U/L)", min_value=0.1, max_value=150.0, value=18.0)
+CL = st.sidebar.number_input("Metabolic clearance of drugs (CL) (L/h)", min_value=0.1, max_value=100.0, value=3.85)
+V = st.sidebar.number_input("Apparent volume of distribution (Vd) (L)", min_value=0.1, max_value=1000.0, value=10.0)
 
 # Add prediction button
 predict_button = st.sidebar.button("Predict")
@@ -77,9 +77,16 @@ if predict_button:
     try:
         input_array = np.array([SEX, AGE, WT, Single_Dose, Daily_Dose, SCR, CLCR, BUN, ALT, AST, CL, V]).reshape(1, -1)
         prediction = stacking_regressor.predict(input_array)[0]
-        st.success(f"Prediction result: {prediction:.2f} mg/L")
+        
+        # Ensure the prediction is positive
+        if prediction <= 0:
+            prediction = 0.1  # Set a small positive value if prediction is non-positive
+
+
+st.success(f"Prediction result: {prediction:.2f} mg/L")
     except Exception as e:
         st.error(f"Error during prediction: {e}")
+
 
 # Visualization display
 st.header("SHAP Visualization Analysis")
