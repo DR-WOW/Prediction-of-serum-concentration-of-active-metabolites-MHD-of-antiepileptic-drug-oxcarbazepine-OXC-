@@ -34,10 +34,10 @@ class TabNetRegressorWrapper(RegressorMixin, BaseEstimator):
 model_path = "stacking_regressor_model.pkl"
 try:
     stacking_regressor = joblib.load(model_path)
-    st.success("模型加载成功！")
-except Exception as e:
-    st.error(f"模型加载失败：{e}")
-    raise  # 重新抛出异常以便调试
+#    st.success("模型加载成功！")
+#except Exception as e:
+#    st.error(f"模型加载失败：{e}")
+#    raise  # 重新抛出异常以便调试
 
 # 设置页面标题
 st.title("📊 Stacking 模型预测与 SHAP 可视化分析")
