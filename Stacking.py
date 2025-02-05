@@ -42,13 +42,10 @@ except Exception as e:
     raise  # Re-raise the exception for debugging
 
 # Set page title
-try:
-    st.title("📊 Stacking Model Prediction and SHAP Visualization")
-    st.write("""
-    By inputting feature values, you can obtain the model's prediction and understand the contribution of each feature using SHAP analysis.
-    """)
-except Exception as e:
-    st.error(f"Error setting page title: {e}")
+st.title("📊 Stacking Model Prediction and SHAP Visualization")
+st.write("""
+By inputting feature values, you can obtain the model's prediction and understand the contribution of each feature using SHAP analysis.
+""")
 
 # Sidebar for feature input
 st.sidebar.header("Feature Input Area")
