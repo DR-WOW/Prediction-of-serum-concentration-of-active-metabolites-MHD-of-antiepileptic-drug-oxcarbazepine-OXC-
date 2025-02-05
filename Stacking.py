@@ -5,7 +5,27 @@ from PIL import Image
 import joblib
 
 # 导入自定义类
-from TabNetRegressorWrapper import TabNetRegressorWrapper
+from sklearn.base import RegressorMixin, BaseEstimator
+from pytorch_tabnet.tab_model import TabNetRegressor
+
+# 定义 TabNetRegressorWrapper 类
+class TabNetRegressorWrapper(RegressorMixin, BaseEstimator):
+    def __init__(self, **kwargs):
+        self.model = TabNetRegressor(**kwargs)
+    
+    def fit(self, X, y, **kwargs):
+        # 将 X 转换为 NumPy 数组
+        X = X.values if isinstance(X, pd.DataFrame) else X
+        # 将 y 转换为 NumPy 数组并确保它是二维的
+        y = y.values if isinstance(y, pd.Series) else y
+        y = y.reshape(-1, 1)  # 确保 y 是二维的
+        self.model.fit(X, y, **kwargs)
+        return self
+    
+    def predict(self, X, **kwargs):
+        # 将 X 转换为 NumPy 数组
+        X = X.values if isinstance(X, pd.DataFrame) else X
+        return self.model.predict(X, **kwargs).flatten()  # 将预测结果展平为一维数组
 
 # 加载模型
 model_path = "stacking_regressor_model.pkl"
@@ -63,7 +83,7 @@ st.write("""
 # 第一层基学习器 SHAP 可视化
 st.subheader("1. 第一层基学习器")
 st.write("基学习器（GBDT、XGBoost、LightGBM、CatBoost、TabNet、LASSO 等6种算法模型）的特征贡献分析。")
-first_layer_img = "Summary_plot of Base Learners in the First Layer of Stacking Model.png"
+first_layer_img = "SHAP Feature Importance of Base Learners in the First Layer of Stacking Model.png"
 try:
     img1 = Image.open(first_layer_img)
     st.image(img1, caption="第一层基学习器的 SHAP 贡献分析", use_column_width=True)
