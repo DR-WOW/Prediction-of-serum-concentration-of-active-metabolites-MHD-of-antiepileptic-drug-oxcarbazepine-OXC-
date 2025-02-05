@@ -85,7 +85,7 @@ st.write("""
 # 第一层基学习器 SHAP 可视化
 st.subheader("1. 第一层基学习器")
 st.write("基学习器（GBDT、XGBoost、LightGBM、CatBoost、TabNet、LASSO 等6种算法模型）的特征贡献分析。")
-first_layer_img = "SHAP Feature Importance of Base Learners in the First Layer of Stacking Model.png"
+first_layer_img = "Summary_plot of Base Learners in the First Layer of Stacking Model.png"
 try:
     img1 = Image.open(first_layer_img)
     st.image(img1, caption="第一层基学习器的 SHAP 贡献分析", use_column_width=True)
