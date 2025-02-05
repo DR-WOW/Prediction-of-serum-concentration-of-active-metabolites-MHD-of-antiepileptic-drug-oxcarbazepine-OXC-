@@ -4,6 +4,9 @@ import pandas as pd
 from PIL import Image
 import joblib
 
+# 确保 st.set_page_config 在脚本最开始调用
+st.set_page_config(layout="wide", page_title="Stacking 模型预测与 SHAP 可视化", page_icon="📊")
+
 # 导入自定义类
 from sklearn.base import RegressorMixin, BaseEstimator
 from pytorch_tabnet.tab_model import TabNetRegressor
@@ -36,8 +39,7 @@ except Exception as e:
     st.error(f"模型加载失败：{e}")
     raise  # 重新抛出异常以便调试
 
-# 设置页面配置和标题
-st.set_page_config(layout="wide", page_title="Stacking 模型预测与 SHAP 可视化", page_icon="📊")
+# 设置页面标题
 st.title("📊 Stacking 模型预测与 SHAP 可视化分析")
 st.write("""
 通过输入特征值进行模型预测，并结合 SHAP 分析结果，了解特征对模型预测的贡献。
