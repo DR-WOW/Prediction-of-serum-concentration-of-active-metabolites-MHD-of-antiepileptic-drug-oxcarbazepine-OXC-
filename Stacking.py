@@ -81,12 +81,10 @@ if predict_button:
         # Ensure the prediction is positive
         if prediction <= 0:
             prediction = 0.1  # Set a small positive value if prediction is non-positive
-
-
-st.success(f"Prediction result: {prediction:.2f} mg/L")
+        
+        st.success(f"Prediction result: {prediction:.2f} mg/L")
     except Exception as e:
         st.error(f"Error during prediction: {e}")
-
 
 # Visualization display
 st.header("SHAP Visualization Analysis")
