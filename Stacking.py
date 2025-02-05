@@ -4,6 +4,9 @@ import pandas as pd
 from PIL import Image
 import joblib
 
+# 导入自定义类
+from TabNetRegressorWrapper import TabNetRegressorWrapper
+
 # 加载模型
 model_path = "stacking_regressor_model.pkl"
 try:
@@ -11,10 +14,10 @@ try:
     st.success("模型加载成功！")
 except Exception as e:
     st.error(f"模型加载失败：{e}")
+    raise  # 重新抛出异常以便调试
 
 # 设置页面配置和标题
 st.set_page_config(layout="wide", page_title="Stacking 模型预测与 SHAP 可视化", page_icon="📊")
-
 st.title("📊 Stacking 模型预测与 SHAP 可视化分析")
 st.write("""
 通过输入特征值进行模型预测，并结合 SHAP 分析结果，了解特征对模型预测的贡献。
@@ -26,7 +29,7 @@ st.sidebar.write("请输入特征值：")
 
 # 定义特征输入范围
 SEX = st.sidebar.selectbox("性别 Gender(1 = male, 0 = female)", [0, 1])
-AGE= st.sidebar.number_input("年龄Age (范围: 0.0-18)", min_value=0.0, max_value=18.0, value=5.0)
+AGE = st.sidebar.number_input("年龄Age (范围: 0.0-18)", min_value=0.0, max_value=18.0, value=5.0)
 WT = st.sidebar.number_input("体重Weight (范围: 0.0-100.0)", min_value=0.0, max_value=100.0, value=25.0)
 Single_Dose = st.sidebar.number_input("单次给药剂量/体重Single_Dose/weight (范围: 0.0-60)", min_value=0.0, max_value=60, value=15.0)
 Daily_Dose = st.sidebar.number_input("日总剂量Daily_Dose (范围: 0.0-2400)", min_value=0.0, max_value=2400, value=450)
@@ -45,14 +48,8 @@ predict_button = st.sidebar.button("进行预测")
 if predict_button:
     st.header("浓度预测结果(mg/L)")
     try:
-        # 将输入特征转换为模型所需格式
-        input_array = np.array([SEX, AGE, WT, Single_Dose,	Daily_Dose, SCR, CLCR,	BUN	,ALT, AST, CL, V]).reshape(1, -1)
-
-
-        # 模型预测
+        input_array = np.array([SEX, AGE, WT, Single_Dose, Daily_Dose, SCR, CLCR, BUN, ALT, AST, CL, V]).reshape(1, -1)
         prediction = stacking_regressor.predict(input_array)[0]
-
-        # 显示预测结果
         st.success(f"预测结果：{prediction:.2f}")
     except Exception as e:
         st.error(f"预测时发生错误：{e}")
@@ -66,7 +63,7 @@ st.write("""
 # 第一层基学习器 SHAP 可视化
 st.subheader("1. 第一层基学习器")
 st.write("基学习器（GBDT、XGBoost、LightGBM、CatBoost、TabNet、LASSO 等6种算法模型）的特征贡献分析。")
-first_layer_img = "SHAP Feature Importance of Base Learners in the First Layer of Stacking Model.png"
+first_layer_img = "Summary_plot of Base Learners in the First Layer of Stacking Model.png"
 try:
     img1 = Image.open(first_layer_img)
     st.image(img1, caption="第一层基学习器的 SHAP 贡献分析", use_column_width=True)
